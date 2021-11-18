@@ -1,20 +1,33 @@
-// lab4JackLi.cpp : This file contains the 'main' function. Program execution begins and ends there.
-//
-
+#include "Game.h"
+#include "Function.h"
+#include "GameBoard.h"
+#include "TicTacToe.h"
+#include "Gomoku.h"
+#include <vector>
+#include <cstring>
+#include <string>
+#include <sstream>
 #include <iostream>
+#include <algorithm>
 
-int main()
-{
-    std::cout << "Hello World!\n";
+int main(int argc, char* argv[]) {
+    GameBoard* game_ptr = GameBoard::initialize(argc, argv);
+    if (game_ptr == 0) {
+        string instruction = "TicTacToe";
+        return usage_message(argv[program_name], instruction); // return ret_value::incorrect_input;
+    }
+
+    int ret = game_ptr->play();
+    if (ret == func_ret_value::draw) {
+        print_error(no_more_winning_moves);
+        return ret_value::no_more_winning_moves;
+    }
+    else if (ret == func_ret_value::quit) {
+        print_error(player_quit);
+        return ret_value::player_quit;
+    }
+    else if (ret == func_ret_value::finished) {
+        print_error(success);
+        return ret_value::success;
+    }
 }
-
-// Run program: Ctrl + F5 or Debug > Start Without Debugging menu
-// Debug program: F5 or Debug > Start Debugging menu
-
-// Tips for Getting Started: 
-//   1. Use the Solution Explorer window to add/manage files
-//   2. Use the Team Explorer window to connect to source control
-//   3. Use the Output window to see build output and other messages
-//   4. Use the Error List window to view errors
-//   5. Go to Project > Add New Item to create new code files, or Project > Add Existing Item to add existing code files to the project
-//   6. In the future, to open this project again, go to File > Open > Project and select the .sln file
